@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Polling chat room</title>
+	<meta charset="UTF-8"/>
+	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript">
+		function formatTwoDigitNumber( number ) {
+			if( number < 10 ) {
+				return '0' + number;
+			} else {
+				return number;
+			}
+		}
+
+		function formatDate( date ) {
+			return formatTwoDigitNumber( date.getHours() ) + ":" + formatTwoDigitNumber( date.getMinutes() ) + ":" + formatTwoDigitNumber( date.getSeconds() );
+		}
+
+		function updateChat() {
+      		$.ajax({
+			  	type: 'GET',
+			  	url: 'http://127.0.0.1:8080/messages',
+			  	contentType: 'json'
+			}).done(function( data ) {
+				var tmp = '';
+				for( var i = 0; i < data.length; i++ ) {
+					tmp += '<li><span class="time">' + formatDate( new Date(data[i].time) ) + '</span>   <span class="message">' + data[i].message + ' (' + data[i].user + ')</span></li>';
+				}
+				$( '#messagesList' ).append( tmp );
+				setTimeout(updateChat, 1000);
+			}).fail(function() {
+				console.log( 'Při komunikaci se vyskytla chyba!' );
+			});
+		}
+
+		$( document ).ready( function() {
+    		updateChat();
+    		$( '#sendForm' ).submit( function() {
+    			var newMessage = $( '#newMessage' ).val();
+    			var newUser = $( '#newUser' ).val();
+          		$.ajax({
+				  	type: 'POST',
+				  	url: 'http://127.0.0.1:8080/messages',
+				  	data: {newMessage, newUser},
+				  	contentType: 'json'
+				}).done(function( data ) {
+    				updateChat();
+  				}).fail(function() {
+    				alert( 'Při komunikaci se vyskytla chyba!' );
+				});
+				$( '#newMessage' ).val( '' );
+				return false;
+			});
+		});
+	</script>
+</head>
+<body>
+	<h1>Polling chat room</h1>
+		<ol class="messagesList" id="messagesList"></ol>
+	<form action="/messages" method="POST" id="sendForm" autocomplete="off">
+		<input type="text" class="form-control newUser" id="newUser" placeholder="Zadejte Vaše jméno"/>
+		<input type="text" class="form-control newMessage" id="newMessage" placeholder="Zadejte zprávu..."/>
+		<button class="btn btn-default" type="submit" id="sendButton">Odeslat</button>
+	</form>
+</body>
+</html>
