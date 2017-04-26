@@ -1,0 +1,11 @@
+{
+  "name": "DP-nodejs",
+  "version": "1.0.0",
+  "dependencies": {
+    "benchmark": "^2.1.4",
+    "lodash": "^4.17.4",
+    "microtime": "^2.1.3",
+    "open": "0.0.5",
+    "platform": "^1.3.4"
+  }
+}

@@ -43,20 +43,38 @@ function mineFromParameters( parametersString, parameterName, splitMark, assignM
     return false;
 }
 
-function setFckingHeaders( res ) {
+function setHeaders( res ) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept");
     res.setHeader("Access-Control-Max-Age", "3600");
 }
 
+var open = require('open');
+var Benchmark = require('benchmark');
+
 http.createServer( function( req, res ) {
     req.body = "";
     req.on('data', function( chunk ) {
         req.body += chunk;
+        console.log("Here am I");
+
+
+        // na localhostu js se spuštěním testů
+
+        // na lokalu test case v benchmarkjs nad určitejma URL
+
+        // to otevřu v různých prohlížečích a až mi to doběhne tak na síti POST do souboru
+
+        // pak po sobě uklidím
+
+        open('localhost:3000/test1', 'firefox', function (err) {
+          // získat obsah z prohlížeče
+          console.log('The user closed the browser');
+        });
     });
     req.on('end', function () {
-        setFckingHeaders( res );
+        setHeaders( res );
         if( req.url.match( "^/messages$" ) ) {
     		if( req.method == "GET" ) {
                 res.writeHead( 200, {'Content-Type': 'application/json'} );
