@@ -1,50 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Polling chat room</title>
+	<title>Automated JS testing</title>
 	<meta charset="UTF-8"/>
 	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script type="text/javascript">
-		function formatTwoDigitNumber( number ) {
-			if( number < 10 ) {
-				return '0' + number;
-			} else {
-				return number;
-			}
-		}
-
-		function formatDate( date ) {
-			return formatTwoDigitNumber( date.getHours() ) + ":" + formatTwoDigitNumber( date.getMinutes() ) + ":" + formatTwoDigitNumber( date.getSeconds() );
-		}
-
-		function updateResults() {
-      		$.ajax({
-			  	type: 'GET',
-			  	url: 'http://127.0.0.1:3000/messages'
-			}).done(function( data ) {
-				var tmp = '';
-				for( var i = 0; i < data.length; i++ ) {
-					tmp += '<li><span class="time">' + formatDate( new Date(data[i].time) ) + '</span>   <span class="message">' + data[i].message + ' (' + data[i].user + ')</span></li>';
-				}
-				$( '#messagesList' ).append( tmp );
-				setTimeout(updateResults, 1000);
+		function runTest2() {
+			$.ajax({
+				type: 'GET',
+				url: '127.0.0.1:3000/test2'
+			}).done(function(data) {
+				var tmp = '<p>' + data + '</p>';
+				$('#resultList').append( data );
 			}).fail(function() {
-				console.log( 'Při komunikaci se vyskytla chyba!' );
+				console.log("Chyba při komunikaci!");
 			});
 		}
 
 		$( document ).ready( function() {
-    		updateResults();
+    		runTest2();
     		$( '#sendForm' ).submit( function() {
-    			var newMessage = $( '#newMessage' ).val();
-    			var newUser = $( '#newUser' ).val();
-          		$.ajax({
+    			$.ajax({
 				  	type: 'POST',
-				  	url: 'http://127.0.0.1:3000/messages',
-				  	data: {newMessage, newUser},
-				  	contentType: 'json'
+				  	url: 'http://127.0.0.1:3000/messages'
 				}).done(function( data ) {
-    				updateResults();
+    				runTest2();
   				}).fail(function() {
     				alert( 'Při komunikaci se vyskytla chyba!' );
 				});
