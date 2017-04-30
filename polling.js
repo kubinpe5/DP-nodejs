@@ -51,7 +51,6 @@ function setHeaders( res ) {
 }
 
 var open = require('open');
-var Benchmark = require('benchmark');
 
 http.createServer( function( req, res ) {
     req.body = "";
@@ -68,7 +67,7 @@ http.createServer( function( req, res ) {
 
         // pak po sobě uklidím
 
-        open('localhost:3000/test1', 'firefox', function (err) {
+        open('http://localhost:3000/test2/test2.html', 'firefox', function (err) {
           // získat obsah z prohlížeče
           console.log('The user closed the browser');
         });

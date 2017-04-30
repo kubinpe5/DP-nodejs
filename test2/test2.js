@@ -116,6 +116,7 @@ suite.add('For loop, basic', function() {
   result.addLine('Fastest is ' + this.filter('fastest').map('name'));
   result.addLine('Slowest is ' + this.filter('slowest').map('name'));
   console.log(result.getResult());
+  axios.post('/results', { browser: navigator.userAgent, results: result});
 })
 // run async
 .run({ 'async': true });

@@ -1,18 +1,16 @@
-var http = require("http");
-var express = require('express');
+var finalhandler = require('finalhandler');
+var http = require('http');
+var serveStatic = require('serve-static');
 
-var app = express();
+// Serve up public/ftp folder
+var serve = serveStatic('./', {'index': 'index.html'});
 
-app.get('/index.html', function (req, res) {
-  console.log('Time:', Date.now());
-  res.sendFile("/index.html", {root: __dirname });
+// Create server
+var server = http.createServer(function (req, res) {
+	serve(req, res, finalhandler(req, res));
 });
 
-app.get('/test2/test2.html', function (req, res) {
-  console.log('Time:', Date.now());
-  next();
-});
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+// Listen
+server.listen(3000, function() {
+    console.log( 'Server has started and is listening on port 3000' );
 });

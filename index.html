@@ -1,34 +1,40 @@
 <!DOCTYPE html>
-<!-- <html>
+<html>
 <head>
 	<title>Automated JS testing</title>
 	<meta charset="UTF-8"/>
 	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script type="text/javascript">
-		function runTest2() {
-			$.ajax({
-				type: 'GET',
-				url: '127.0.0.1:3000/test2'
-			}).done(function(data) {
-				var tmp = '<p>' + data + '</p>';
-				$('#resultList').append( data );
+		function updateResults() {
+      		$.ajax({
+			  	type: 'GET',
+			  	url: 'http://127.0.0.1:3000/results'
+			}).done(function( data ) {
+				var tmp = '';
+				for( var i = 0; i < data.length; i++ ) {
+					tmp += '<li><span class="results">' + data[i].result + '</span></li>';
+				}
+				$( '#resultsList' ).append( tmp );
+				setTimeout(updateResults, 1000);
 			}).fail(function() {
-				console.log("Chyba při komunikaci!");
+				console.log( 'Při komunikaci se vyskytla chyba!' );
 			});
 		}
-
 		$( document ).ready( function() {
-    		runTest2();
+    		updateResults();
     		$( '#sendForm' ).submit( function() {
-    			$.ajax({
+    			var result = $( '#newResult' ).val();
+          		$.ajax({
 				  	type: 'POST',
-				  	url: 'http://127.0.0.1:3000/messages'
+				  	url: 'http://127.0.0.1:3000/results',
+				  	data: {result},
+				  	contentType: 'json'
 				}).done(function( data ) {
-    				runTest2();
+    				updateResults();
   				}).fail(function() {
     				alert( 'Při komunikaci se vyskytla chyba!' );
 				});
-				$( '#newMessage' ).val( '' );
+				$( '#newResult' ).val( '' );
 				return false;
 			});
 		});
@@ -36,66 +42,10 @@
 </head>
 <body>
 	<h1>Automated JS testing</h1>
-	<ol class="resultList" id="resultList"></ol>
-
-	<button class="btn btn-default" onclick="runTest1()">Spustit test1</button>
-	<button class="btn btn-default" onclick="runTest2()">Spustit test2</button>
-	<button class="btn btn-default" onclick="runTest3()">Spustit test3</button>
-
-	<button class="btn btn-default" onclick="runAll()">Spustit všechny testy</button>
+		<ol class="resultsList" id="resultsList"></ol>
+		<div id="newResult"></div>
+	<form action="/results" method="POST" id="sendForm" autocomplete="off">
+		<button class="btn btn-default" type="submit" id="sendButton">Spustit testy</button>
+	</form>
 </body>
-</html>
--->
-
-
-
-
-<html>
-	<head>
-		<title>jsonp test</title>
-		<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>		
-		<script type="text/javascript">
-            $(function(){				
-                $('#select_link').click(function(e){
-                    e.preventDefault();
-                    console.log('select_link clicked');
-                    /*
-                     $.ajax({
-                        dataType: 'jsonp',
-                        data: "data=yeah",						
-                        jsonp: 'callback',
-                        url: 'http://localhost:3000/endpoint?callback=?',						
-                        success: function(data) {
-                            console.log('success');
-                            console.log(JSON.stringify(data));
-                        }
-                    });
-					var data = {};
-					data.title = "title";
-					data.message = "message";
-					
-					$.ajax({
-						type: 'POST',
-						data: JSON.stringify(data),
-				        contentType: 'application/json',
-                        url: 'http://localhost:3000/endpoint',						
-                        success: function(data) {
-                            console.log('success');
-                            console.log(JSON.stringify(data));
-                        }
-                    });*/
-					$.ajax('http://localhost:3000/endpoint', {
-					        type: 'POST',
-					        data: JSON.stringify(data),
-					        contentType: 'application/json',
-					        success: function() { console.log('success');},
-					        error  : function() { console.log('error');}
-					});
-                });				
-            });
-        </script>
-    </head>
-    <body>
-        <div id="select_div"><a href="#" id="select_link">Test</a></div>    
-    </body>
 </html>

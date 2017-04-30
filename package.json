@@ -2,6 +2,7 @@
   "name": "DP-nodejs",
   "version": "1.0.0",
   "dependencies": {
+    "axios": "^0.16.1",
     "benchmark": "^2.1.4",
     "express": "^4.15.2",
     "htmlparser2": "^3.9.2",
