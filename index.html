@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<!-- <html>
 <head>
 	<title>Automated JS testing</title>
 	<meta charset="UTF-8"/>
@@ -36,9 +36,66 @@
 </head>
 <body>
 	<h1>Automated JS testing</h1>
-		<ol class="messagesList" id="messagesList"></ol>
-	<form action="/messages" method="POST" id="sendForm" autocomplete="off">
-		<button class="btn btn-default" type="submit" id="sendButton">Spustit testy</button>
-	</form>
+	<ol class="resultList" id="resultList"></ol>
+
+	<button class="btn btn-default" onclick="runTest1()">Spustit test1</button>
+	<button class="btn btn-default" onclick="runTest2()">Spustit test2</button>
+	<button class="btn btn-default" onclick="runTest3()">Spustit test3</button>
+
+	<button class="btn btn-default" onclick="runAll()">Spustit všechny testy</button>
 </body>
+</html>
+-->
+
+
+
+
+<html>
+	<head>
+		<title>jsonp test</title>
+		<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>		
+		<script type="text/javascript">
+            $(function(){				
+                $('#select_link').click(function(e){
+                    e.preventDefault();
+                    console.log('select_link clicked');
+                    /*
+                     $.ajax({
+                        dataType: 'jsonp',
+                        data: "data=yeah",						
+                        jsonp: 'callback',
+                        url: 'http://localhost:3000/endpoint?callback=?',						
+                        success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                        }
+                    });
+					var data = {};
+					data.title = "title";
+					data.message = "message";
+					
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+				        contentType: 'application/json',
+                        url: 'http://localhost:3000/endpoint',						
+                        success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                        }
+                    });*/
+					$.ajax('http://localhost:3000/endpoint', {
+					        type: 'POST',
+					        data: JSON.stringify(data),
+					        contentType: 'application/json',
+					        success: function() { console.log('success');},
+					        error  : function() { console.log('error');}
+					});
+                });				
+            });
+        </script>
+    </head>
+    <body>
+        <div id="select_div"><a href="#" id="select_link">Test</a></div>    
+    </body>
 </html>
