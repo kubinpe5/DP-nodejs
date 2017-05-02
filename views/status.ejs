@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Automated JS results</title>
+	<meta charset="UTF-8"/>
+	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+<body>
+	<h1>Automated JS results</h1>
+
+	<h1>Results of the test</h1>
+	<div>
+	    <% for(var i=0; i<results.length; i++) { %>
+	    	<ul>
+	    	<% for(var j=0; j<results[i].length; i++) { %>
+	        	<li><%= results[i][j] %></li>
+        	<% } %>	
+        	</ul>
+	    <% } %>
+	</div>
+
+</body>
+</html>

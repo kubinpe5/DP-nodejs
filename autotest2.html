@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Automated JS testing</title>
+	<meta charset="UTF-8"/>
+	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript">
+		open('http://localhost:3000/tests/test2.html', 'firefox', function (err) {
+  		  // získat obsah z prohlížeče
+  		  console.log('The user closed the browser');
+		});
+
+		open('http://localhost:3000/tests/test2.html', 'chromium', function (err) {
+		  // získat obsah z prohlížeče
+		  console.log('The user closed the browser');
+		});
+
+		open('http://localhost:3000/tests/test2.html', 'opera', function (err) {
+		  // získat obsah z prohlížeče
+		  console.log('The user closed the browser');
+		});
+	</script>
+</head>
+<body>
+	<h1>Testing page</h1>
+
+</body>
+</html>

@@ -17,8 +17,12 @@
 		<button class="btn btn-default" type="submit" id="sendButton">Spustit test2</button>
 	</form>
 
-	<form action="/status" method="GET" id="checkStatus" autocomplete="off">
-		<button class="btn btn-default" type="submit" id="sendButton">Check status</button>
-	</form>
+	<h1>Results of test</h1>
+	<ul>
+	    <% for(var i=0; i<results.length; i++) { %>
+	        <li><%= results[i] %></li>
+	    <% } %>
+	</ul>
+
 </body>
 </html>
