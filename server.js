@@ -56,7 +56,8 @@ app.post('/results', function(req, res, next) {
 });
 
 app.get('/status', function(req, res) {
-	res.render("status", {this.results});
+	res.render("status", {results: results.getResults()});
+	console.log(results);
 });
 
 app.listen(3000, function () {
