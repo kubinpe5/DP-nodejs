@@ -4,48 +4,18 @@
 	<title>Automated JS testing</title>
 	<meta charset="UTF-8"/>
 	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
-	<script type="text/javascript">
-		function updateResults() {
-      		$.ajax({
-			  	type: 'GET',
-			  	url: 'http://127.0.0.1:3000/results'
-			}).done(function( data ) {
-				var tmp = '';
-				for( var i = 0; i < data.length; i++ ) {
-					tmp += '<li><span class="results">' + data[i].result + '</span></li>';
-				}
-				$( '#resultsList' ).append( tmp );
-				setTimeout(updateResults, 1000);
-			}).fail(function() {
-				console.log( 'Při komunikaci se vyskytla chyba!' );
-			});
-		}
-		$( document ).ready( function() {
-    		updateResults();
-    		$( '#sendForm' ).submit( function() {
-    			var result = $( '#newResult' ).val();
-          		$.ajax({
-				  	type: 'POST',
-				  	url: 'http://127.0.0.1:3000/results',
-				  	data: {result},
-				  	contentType: 'json'
-				}).done(function( data ) {
-    				updateResults();
-  				}).fail(function() {
-    				alert( 'Při komunikaci se vyskytla chyba!' );
-				});
-				$( '#newResult' ).val( '' );
-				return false;
-			});
-		});
-	</script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 	<h1>Automated JS testing</h1>
-		<ol class="resultsList" id="resultsList"></ol>
-		<div id="newResult"></div>
-	<form action="/results" method="POST" id="sendForm" autocomplete="off">
-		<button class="btn btn-default" type="submit" id="sendButton">Spustit testy</button>
+	
+	<form action="/autotest1.html" method="GET" id="test1SendForm" autocomplete="off">
+		<button class="btn btn-default" type="submit" id="sendButton">Spustit test1</button>
 	</form>
+
+	<form action="/autotest2" method="POST" id="test1SendForm" autocomplete="off">
+		<button class="btn btn-default" type="submit" id="sendButton">Spustit test2</button>
+	</form>
+
 </body>
 </html>
