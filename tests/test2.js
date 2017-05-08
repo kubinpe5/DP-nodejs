@@ -17,9 +17,6 @@ document.getElementById("prerequisities").innerHTML = "Benchmark.platform:";
 //console.log("Benchmark.platform:");
 
 for (let key in Benchmark.platform) {
-    if (Benchmark.platform.hasOwnProperty(key)) {
-  //      console.log("    ", key, Benchmark.platform[key]);
-    }
     if ( Benchmark.platform.hasOwnProperty(key) && 
     		key == "description" || key == "ua" || key == "" || key == "os" || 
     		key == "version" || key == "name" || key == "layout") {
@@ -116,7 +113,6 @@ suite.add('For loop, basic', function() {
   result.addLine('Fastest is ' + this.filter('fastest').map('name'));
   result.addLine('Slowest is ' + this.filter('slowest').map('name'));
   console.log(result.getResult());
-
   axios.post('/results', { results: result });
 })
 // run async

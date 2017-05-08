@@ -28,6 +28,7 @@ var results = {
 	},
 
 	addResult: function( result, browser ) {
+		console.log("Přidávám");
 		this.results.push( { 'result': result, 'browser': browser, 'time': new Date() } );
 	}
 }
@@ -43,15 +44,30 @@ app.get('/', function (req, res) {
   res.sendFile('index.html');
 });
 
+app.post('/autotest1', function(req, res) {
+	open('http://localhost:3000/tests/test1.html', 'firefox');
+	open('http://localhost:3000/tests/test1.html', 'chromium');
+	open('http://localhost:3000/tests/test1.html', 'opera');
+	res.redirect("/");
+})
+
 app.post('/autotest2', function(req, res) {
-	console.log("Post request");
 	open('http://localhost:3000/tests/test2.html', 'firefox');
+	open('http://localhost:3000/tests/test2.html', 'chromium');
+	open('http://localhost:3000/tests/test2.html', 'opera');
+	res.redirect("/");
+})
+
+app.post('/autotest3', function(req, res) {
+	open('http://localhost:3000/tests/test3.html', 'firefox');
+	open('http://localhost:3000/tests/test3.html', 'chromium');
+	open('http://localhost:3000/tests/test3.html', 'opera');
 	res.redirect("/");
 })
 
 app.post('/results', function(req, res, next) {
 	res.render("index", { results: req.body.results.result });
-	results.addResult(req.body.results.result, 'firefox');
+	results.addResult(req.body.results.result, req.body.results.result[2]);
 	console.log(req.body.results.result);
 });
 
