@@ -44,7 +44,7 @@ suite.add('For loop, basic', function() {
   for( var i = 0; i < array.length; i++ ) {
     myFunction(i);
   }
-})/*
+})
 .add('For loop, cached', function() {
   for( var i = 0, length = array.length; i < length; i++ ) {
     myFunction(i);
@@ -74,7 +74,7 @@ suite.add('For loop, basic', function() {
   for( var i in array ) {
     myFunction(i);
   }
-})*/
+})
 .add('While loop, basic', function() {
   var i = 0;
   while (i < array.length) {

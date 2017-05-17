@@ -7,19 +7,15 @@ var multer = require('multer');
 var ejs = require('ejs');
 var upload = multer();
 
+var requestFlag = 0;
+var responseFlag = 0;
+
+var browsers = ["firefox", "chromium", "opera"];
+
 var results = {
 	results: [],
-	maxResultsCount: 20,
-
-	deleteOldResults: function() {
-		var oldResultsCount = this.results.length - this.results.maxResultsCount;
-		for( var i = 0; i < oldResultsCount; i++ ) {
-			this.messages.splice(i, 1);
-		}
-	},
-
+	
 	getResults: function() {
-		this.deleteOldResults();
 		var ret = [];
 		for( var i = 0; i < this.results.length; i++ ) {
 			ret.push(this.results[i]);
@@ -31,6 +27,10 @@ var results = {
 		console.log("Přidávám");
 		this.results.push( { 'result': result, 'browser': browser, 'time': new Date() } );
 	}
+}
+
+function runTest( test ) {
+	open('http://localhost:3000/tests/' + test, browsers[requestFlag]);
 }
 
 app.use(express.static('./'));
@@ -45,30 +45,40 @@ app.get('/', function (req, res) {
 });
 
 app.post('/autotest1', function(req, res) {
-	open('http://localhost:3000/tests/test1.html', 'firefox');
-	open('http://localhost:3000/tests/test1.html', 'chromium');
-	open('http://localhost:3000/tests/test1.html', 'opera');
+	if ( requestFlag != responseFlag - 1 ) {
+		runTest("test1.html");	
+	}
+	requestFlag += 1;
 	res.redirect("/");
 })
 
 app.post('/autotest2', function(req, res) {
-	open('http://localhost:3000/tests/test2.html', 'firefox');
-	open('http://localhost:3000/tests/test2.html', 'chromium');
-	open('http://localhost:3000/tests/test2.html', 'opera');
+	requestFlag += 1;
+	if ( requestFlag != responseFlag ) {
+		runTest("test2.html");	
+	}
 	res.redirect("/");
 })
 
 app.post('/autotest3', function(req, res) {
-	open('http://localhost:3000/tests/test3.html', 'firefox');
-	open('http://localhost:3000/tests/test3.html', 'chromium');
-	open('http://localhost:3000/tests/test3.html', 'opera');
+	requestFlag += 1;
+	if ( requestFlag != responseFlag ) {
+		runTest("test3.html");	
+	}
 	res.redirect("/");
 })
 
 app.post('/results', function(req, res, next) {
-	res.render("index", { results: req.body.results.result });
 	results.addResult(req.body.results.result, req.body.results.result[2]);
-	console.log(req.body.results.result);
+	responseFlag += 1;
+	//console.log(req.body.results.result);
+	console.log("Počet odpovědí: " + responseFlag);
+	if (responseFlag < browsers.length) {
+		console.log("Redirect to autotest1");
+		axios.post('http://localhost:3000/autotest1');
+	} else { 
+		res.redirect("/status");
+	}
 });
 
 app.get('/status', function(req, res) {
