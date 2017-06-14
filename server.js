@@ -30,7 +30,10 @@ var results = {
 }
 
 function runTest( test ) {
-	open('http://localhost:3000/tests/' + test, browsers[requestFlag]);
+	if ( requestFlag != responseFlag - 1 ) {
+		open('http://localhost:3000/tests/' + test, browsers[requestFlag]);
+	}
+	requestFlag += 1;
 }
 
 app.use(express.static('./'));
@@ -44,26 +47,13 @@ app.get('/', function (req, res) {
   res.sendFile('index.html');
 });
 
-app.post('/autotest1', function(req, res) {
-	if ( requestFlag != responseFlag - 1 ) {
-		runTest("test1.html");	
-	}
-	requestFlag += 1;
-	res.redirect("/");
-})
+var tests = req.body.tests;
+var index = 0;
 
-app.post('/autotest2', function(req, res) {
-	requestFlag += 1;
-	if ( requestFlag != responseFlag ) {
-		runTest("test2.html");	
-	}
-	res.redirect("/");
-})
-
-app.post('/autotest3', function(req, res) {
-	requestFlag += 1;
-	if ( requestFlag != responseFlag ) {
-		runTest("test3.html");	
+app.post('/test', function(req, res) {
+	for (var i = tests.length - 1; i >= 0; i--) {
+		index = i;
+		runTest(tests[i].html);
 	}
 	res.redirect("/");
 })
@@ -71,11 +61,10 @@ app.post('/autotest3', function(req, res) {
 app.post('/results', function(req, res, next) {
 	results.addResult(req.body.results.result, req.body.results.result[2]);
 	responseFlag += 1;
-	//console.log(req.body.results.result);
 	console.log("Počet odpovědí: " + responseFlag);
 	if (responseFlag < browsers.length) {
 		console.log("Redirect to autotest1");
-		axios.post('http://localhost:3000/autotest1');
+		axios.post('http://localhost:3000/test/' + tests[index].html);
 	} else { 
 		res.redirect("/status");
 	}
